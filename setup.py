@@ -8,6 +8,7 @@ setup(
     install_requires=[
         "openai>=1.0.0",
         "anthropic>=0.20.0",
+        "google-generativeai>=0.5.0",
         "pydantic>=2.0.0",
         "pypdf2>=3.0.0",
         "python-docx>=1.0.0",

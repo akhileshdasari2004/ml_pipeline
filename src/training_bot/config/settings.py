@@ -16,13 +16,14 @@ LOGS_DIR = ROOT_DIR / "logs"
 # API Keys
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Processing Settings
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", 1000))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 200))
 
 # AI Settings
-DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "gpt-4-turbo")
+DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "gemini-1.5-pro")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
 MAX_RETRIES = 3
 RETRY_MIN_SECONDS = 1
