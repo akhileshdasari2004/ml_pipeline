@@ -1,0 +1,8 @@
+services:
+  pipeline:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: tail -f /dev/null
