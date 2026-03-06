@@ -217,7 +217,7 @@ with tab_brain:
         gc1, gc2 = st.columns([2, 1])
         with gc1:
             g_type = st.selectbox("Neural Task", [t.value for t in TaskType])
-            g_model = st.selectbox("Core Processor", ["gemini-1.5-pro", "gemini-1.5-flash", "gpt-4-turbo", "claude-3-opus", "simulation"])
+            g_model = st.selectbox("Core Processor", ["gpt-4-turbo", "claude-3-opus", "simulation"])
             g_prompt = st.text_area("Neural Template", "Synthesize training examples from: {{text}}")
         with gc2:
             g_temp = st.slider("Neural Entropy", 0.0, 1.2, 0.7)
