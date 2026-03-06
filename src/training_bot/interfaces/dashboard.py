@@ -86,6 +86,10 @@ st.markdown("""
         color: #00f2ff !important;
         border-bottom-color: #00f2ff !important;
     }
+    
+    /* Hide some Streamlit defaults for a cleaner look */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -102,6 +106,306 @@ bot = st.session_state.bot
 def log_event(msg: str, level: str = "INFO"):
     timestamp = datetime.now().strftime("%H:%M:%S")
     st.session_state.logs.append({"time": timestamp, "msg": msg, "level": level})
+
+# --- Architecture HTML Content ---
+ARCHITECTURE_HTML = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise ML Pipeline Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050810;
+    --panel: #0b0f1e;
+    --border: #1a2240;
+    --accent1: #00f5c4;
+    --accent2: #4d7cff;
+    --accent3: #ff6b6b;
+    --accent4: #ffc94d;
+    --accent5: #c084fc;
+    --text: #e2e8f0;
+    --muted: #4a5568;
+    --glow1: rgba(0,245,196,0.15);
+    --glow2: rgba(77,124,255,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: transparent;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .header .badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent1);
+    border: 1px solid var(--accent1);
+    padding: 4px 14px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(24px, 4vw, 42px);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 50%, var(--accent5) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .header p {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .layer-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  .pipeline { display: flex; flex-direction: column; }
+
+  .layer { transform: translateY(0); }
+
+  .cards-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .arrow-connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    position: relative;
+  }
+
+  .arrow-connector::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--accent2), var(--accent1));
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .arrow-connector .arrow-head {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--accent1);
+  }
+
+  .arrow-connector .data-label {
+    position: absolute;
+    right: calc(50% + 16px);
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--accent1);
+    white-space: nowrap;
+    opacity: 0.7;
+  }
+
+  .card {
+    flex: 1;
+    min-width: 160px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+    position: relative;
+    cursor: default;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--card-accent, var(--accent2));
+  }
+
+  .card:hover {
+    border-color: var(--card-accent, var(--accent2));
+    box-shadow: 0 0 24px var(--card-glow, var(--glow2));
+    transform: translateY(-2px);
+  }
+
+  .card .card-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+
+  .card .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .card .card-desc { font-size: 10px; color: var(--muted); line-height: 1.6; }
+
+  .interface-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .card-central {
+    background: linear-gradient(135deg, #0d1530 0%, #0b1525 100%);
+    border: 1px solid var(--accent2);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .card-central .central-icon { font-size: 36px; }
+
+  .card-central .central-body { flex: 1; min-width: 200px; }
+
+  .card-central .central-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent2);
+    margin-bottom: 6px;
+  }
+
+  .card-central .central-desc { font-size: 11px; color: #7090c0; line-height: 1.6; }
+
+  .c-green { --card-accent: var(--accent1); --card-glow: var(--glow1); }
+  .c-blue  { --card-accent: var(--accent2); --card-glow: var(--glow2); }
+  .c-red   { --card-accent: var(--accent3); --card-glow: rgba(255,107,107,0.15); }
+  .c-yellow{ --card-accent: var(--accent4); --card-glow: rgba(255,201,77,0.15); }
+  .c-purple{ --card-accent: var(--accent5); --card-glow: rgba(192,132,252,0.15); }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="badge">Pipeline Overview</div>
+    <h1>System Architecture</h1>
+    <p>// Modular · Async · Production-Grade</p>
+  </div>
+
+  <div class="pipeline">
+    <div class="layer">
+      <div class="layer-label">// 01 — User Interfaces</div>
+      <div class="interface-row">
+        <div class="card c-purple">
+          <span class="card-icon">⌨️</span>
+          <div class="card-title">CLI Interface</div>
+          <div class="card-desc">Terminal-based control.</div>
+        </div>
+        <div class="card c-purple">
+          <span class="card-icon">📊</span>
+          <div class="card-title">Streamlit Dashboard</div>
+          <div class="card-desc">Web-based analytics.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector"><div class="arrow-head"></div></div>
+
+    <div class="layer">
+      <div class="layer-label">// 02 — Factory Manager</div>
+      <div class="card card-central">
+        <span class="central-icon">🧠</span>
+        <div class="central-body">
+          <div class="central-title">bot.py — The Factory Manager</div>
+          <div class="central-desc">Central coordinator of all operations. Orchestrates document loading, text processing, quality assessment, and export.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector"><div class="arrow-head"></div></div>
+
+    <div class="layer">
+      <div class="layer-label">// 03 — Document Loaders</div>
+      <div class="cards-row">
+        <div class="card c-green"><span class="card-icon">🔀</span><div class="card-title">Unified</div></div>
+        <div class="card c-green"><span class="card-icon">🌐</span><div class="card-title">Web</div></div>
+        <div class="card c-green"><span class="card-icon">📄</span><div class="card-title">PDF</div></div>
+        <div class="card c-green"><span class="card-icon">📁</span><div class="card-title">Files</div></div>
+      </div>
+    </div>
+
+    <div class="arrow-connector"><div class="arrow-head"></div></div>
+
+    <div class="layer">
+      <div class="layer-label">// 04 — Text Kitchen</div>
+      <div class="cards-row">
+        <div class="card c-yellow"><span class="card-icon">🧹</span><div class="card-title">Cleaner</div></div>
+        <div class="card c-yellow"><span class="card-icon">✂️</span><div class="card-title">Chunker</div></div>
+      </div>
+    </div>
+
+    <div class="arrow-connector"><div class="arrow-head"></div></div>
+
+    <div class="layer">
+      <div class="layer-label">// 05 — AI Brain</div>
+      <div class="cards-row">
+        <div class="card c-blue"><span class="card-icon">📋</span><div class="card-title">Manager</div></div>
+        <div class="card c-blue"><span class="card-icon">⚡</span><div class="card-title">AI Client</div></div>
+      </div>
+    </div>
+
+    <div class="arrow-connector"><div class="arrow-head"></div></div>
+
+    <div class="layer">
+      <div class="layer-label">// 06 — Quality Lab</div>
+      <div class="cards-row">
+        <div class="card c-red"><span class="card-icon">🔬</span><div class="card-title">Evaluator</div></div>
+        <div class="card c-red"><span class="card-icon">📑</span><div class="card-title">Reporter</div></div>
+      </div>
+    </div>
+
+    <div class="arrow-connector"><div class="arrow-head"></div></div>
+
+    <div class="layer">
+      <div class="layer-label">// 07 — Shipping</div>
+      <div class="cards-row">
+        <div class="card c-green"><span class="card-icon">📦</span><div class="card-title">JSON</div></div>
+        <div class="card c-green"><span class="card-icon">📊</span><div class="card-title">CSV</div></div>
+        <div class="card c-green"><span class="card-icon">🗜️</span><div class="card-title">Parquet</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+"""
 
 # --- Header Section ---
 with st.container():
@@ -131,9 +435,14 @@ with m4:
     st.metric("💎 Energy Cost", stats["total_estimated_cost"])
 
 # --- Main Functional Area ---
-tab_ingest, tab_kitchen, tab_brain, tab_lab, tab_ship = st.tabs([
-    "📥 Ingestion", "🔪 Kitchen", "🧠 AI Brain", "🔬 Quality", "🚢 Shipping"
+tab_home, tab_ingest, tab_kitchen, tab_brain, tab_lab, tab_ship = st.tabs([
+    "🏠 Architecture", "📥 Ingestion", "🔪 Kitchen", "🧠 AI Brain", "🔬 Quality", "🚢 Shipping"
 ])
+
+# 0. HOME / ARCHITECTURE
+with tab_home:
+    import streamlit.components.v1 as components
+    components.html(ARCHITECTURE_HTML, height=1600, scrolling=True)
 
 # 1. INGESTION
 with tab_ingest:
