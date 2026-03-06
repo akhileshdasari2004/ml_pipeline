@@ -113,6 +113,10 @@ class AIClient:
         loop = asyncio.get_event_loop()
         response = await loop.run_in_executor(None, lambda: model_instance.generate_content(prompt))
         
+        if not response.candidates:
+            logger.error(f"Gemini returned no candidates. Finish reason: {response.prompt_feedback}")
+            return "Error: AI returned no results (policy block or empty response)."
+            
         content = response.text
         
         # Tracking tokens (Gemini provides usage metadata)
