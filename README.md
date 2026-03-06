@@ -1,4 +1,4 @@
-# 🤖 Enterprise ML Training Data Pipeline
+# Enterprise ML Training Data Pipeline
 
 <div align="center">
 
@@ -11,13 +11,13 @@
 
 **A production-grade, async-first pipeline for automating the creation of high-quality ML training datasets from any document source.**
 
-[Quick Start](#-quick-start) · [Architecture](#-architecture) · [Features](#-features) · [Configuration](#-configuration) · [Contributing](#-contributing)
+[Quick Start](#quick-start) · [Architecture](#architecture) · [Features](#features) · [Configuration](#configuration) · [Contributing](#contributing)
 
 </div>
 
 ---
 
-## 📌 What Is This?
+## What Is This?
 
 Building high-quality training datasets is one of the most time-consuming bottlenecks in ML development. This project automates the entire pipeline — from ingesting raw documents (web pages, PDFs, CSVs, Word files) to generating structured instruction datasets ready for fine-tuning LLMs.
 
@@ -31,38 +31,38 @@ It is designed as a **modular factory system** where a central manager coordinat
 
 ---
 
-## ✨ Features
+## Features
 
 | Layer | Capability |
 |---|---|
-| 📥 **Ingestion** | Web scraping (bot-bypass), PDF, CSV, Markdown, Word docs |
-| 🧹 **Processing** | Noise removal, smart overlapping text chunking |
-| 🧠 **Generation** | Q&A, summarization, classification, instruction datasets |
-| ⚡ **AI Support** | OpenAI GPT-4 + Anthropic Claude, with simulation fallback |
-| 🔬 **Quality Control** | Toxicity, bias, relevance & coherence scoring per example |
-| 📦 **Export** | JSON, CSV, Parquet (ML-ready columnar format) |
-| 📊 **Dashboard** | Real-time Streamlit UI for monitoring jobs and analytics |
-| 💰 **Cost Tracking** | Token usage monitoring and budget alerts |
-| 🔁 **Async** | Concurrent document loading and processing via `asyncio` |
+| Ingestion | Web scraping (bot-bypass), PDF, CSV, Markdown, Word docs |
+| Processing | Noise removal, smart overlapping text chunking |
+| Generation | Q&A, summarization, classification, instruction datasets |
+| AI Support | OpenAI GPT-4 + Anthropic Claude, with simulation fallback |
+| Quality Control | Toxicity, bias, relevance & coherence scoring per example |
+| Export | JSON, CSV, Parquet (ML-ready columnar format) |
+| Dashboard | Real-time Streamlit UI for monitoring jobs and analytics |
+| Cost Tracking | Token usage monitoring and budget alerts |
+| Async | Concurrent document loading and processing via `asyncio` |
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 The system is modeled as a **factory pipeline** with a central manager coordinating all stages:
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    USER INTERFACES                       │
-│              CLI (click)  │  Streamlit Dashboard         │
-└──────────────────┬──────────────────────────────────────┘
-                   │
-┌──────────────────▼──────────────────────────────────────┐
-│              FACTORY MANAGER  (bot.py)                   │
-│   Orchestrates all stages · State · Cost · Error mgmt    │
-└──┬──────────┬──────────┬──────────┬──────────┬──────────┘
-   │          │          │          │          │
-   ▼          ▼          ▼          ▼          ▼
++----------------------------------------------------------+
+|                     USER INTERFACES                      |
+|              CLI (click)  |  Streamlit Dashboard         |
++------------------+---------------------------------------+
+                   |
++------------------v---------------------------------------+
+|              FACTORY MANAGER  (bot.py)                   |
+|   Orchestrates all stages · State · Cost · Error mgmt    |
++--+----------+----------+----------+----------+-----------+
+   |          |          |          |          |
+   v          v          v          v          v
 LOADERS  PROCESSING  GENERATORS  QUALITY   EXPORTERS
 Web/PDF  Clean+Chunk  QA/Summ/   Eval+     JSON/CSV/
 CSV/DOCX  Pipeline   Classify   Reports   Parquet
@@ -73,7 +73,7 @@ CSV/DOCX  Pipeline   Classify   Reports   Parquet
 ```
 src/training_bot/
 ├── __init__.py          # Public API & versioning
-├── bot.py               # 🧠 Factory Manager (main orchestrator)
+├── bot.py               # Factory Manager (main orchestrator)
 ├── models/              # Pydantic data blueprints
 │   ├── document.py      # SourceDocument
 │   ├── chunk.py         # TextChunk
@@ -81,18 +81,18 @@ src/training_bot/
 │   ├── example.py       # TrainingExample
 │   ├── dataset.py       # Dataset
 │   └── job.py           # Job (async state tracking)
-├── loaders/             # 📥 Document Highway
+├── loaders/             # Document Highway
 │   ├── unified.py       # Auto-routing supervisor
 │   ├── web.py           # Enterprise web scraper
 │   ├── pdf.py           # PDF parser
 │   ├── csv_loader.py    # Tabular ingestion
 │   ├── markdown.py      # Markdown parser
 │   └── docx_loader.py   # Word document reader
-├── processing/          # 🧹 Text Kitchen
+├── processing/          # Text Kitchen
 │   ├── cleaner.py       # Noise & whitespace removal
 │   ├── chunker.py       # Overlapping smart chunker
-│   └── pipeline.py      # Clean → Chunk orchestration
-├── generators/          # ⚡ AI Brain
+│   └── pipeline.py      # Clean -> Chunk orchestration
+├── generators/          # AI Brain
 │   ├── manager.py       # Task routing
 │   ├── client.py        # OpenAI + Anthropic client
 │   ├── qa_generator.py
@@ -100,15 +100,15 @@ src/training_bot/
 │   ├── classification.py
 │   ├── instruction.py
 │   └── simulation.py    # Mock client (dev/no-cost mode)
-├── quality/             # 🔬 Quality Lab
+├── quality/             # Quality Lab
 │   ├── evaluator.py     # Toxicity, bias, coherence scoring
 │   ├── filters.py       # Pass/fail thresholds
 │   └── reports.py       # Per-dataset audit reports
-├── exporters/           # 📦 Shipping
+├── exporters/           # Shipping
 │   ├── json_exporter.py
 │   ├── csv_exporter.py
 │   └── parquet_exporter.py
-├── interfaces/          # 🖥️ User Interfaces
+├── interfaces/          # User Interfaces
 │   ├── cli.py
 │   └── dashboard.py
 ├── config/
@@ -123,7 +123,7 @@ src/training_bot/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Clone & Install
 
@@ -186,7 +186,7 @@ Open `http://localhost:8501` to monitor jobs, view quality analytics, and manage
 
 ---
 
-## 🐍 Python API
+## Python API
 
 You can also drive the pipeline programmatically:
 
@@ -228,7 +228,7 @@ asyncio.run(main())
 
 ---
 
-## 🔧 Configuration Reference
+## Configuration Reference
 
 | Variable | Default | Description |
 |---|---|---|
@@ -239,14 +239,14 @@ asyncio.run(main())
 | `SIMULATION_MODE` | `false` | Skip real API calls (dev mode) |
 | `CHUNK_SIZE` | `512` | Max tokens per text chunk |
 | `CHUNK_OVERLAP` | `64` | Overlap tokens between chunks |
-| `QUALITY_THRESHOLD` | `0.7` | Minimum quality score (0–1) |
+| `QUALITY_THRESHOLD` | `0.7` | Minimum quality score (0-1) |
 | `MAX_MONTHLY_COST_USD` | `50.0` | Budget cap with alerts |
 | `LOG_LEVEL` | `INFO` | Logging verbosity |
 | `EXPORT_DIR` | `./data/outputs` | Default export directory |
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -278,7 +278,7 @@ tests/
 
 ---
 
-## 🛠️ Development
+## Development
 
 ```bash
 # Install dev dependencies
@@ -299,46 +299,39 @@ docker-compose up --build
 
 ---
 
-## 📊 Supported Task Types
+## Supported Task Types
 
 | Task | CLI Flag | Description | Output Format |
 |---|---|---|---|
 | Q&A Generation | `--type qa` | Generates question-answer pairs from chunks | `{"question": ..., "answer": ...}` |
-| Summarization | `--type summarization` | Generates long → short summary pairs | `{"document": ..., "summary": ...}` |
+| Summarization | `--type summarization` | Generates long -> short summary pairs | `{"document": ..., "summary": ...}` |
 | Classification | `--type classification` | Assigns labels to text passages | `{"text": ..., "label": ...}` |
 | Instruction | `--type instruction` | Creates instruction-following examples | `{"instruction": ..., "response": ...}` |
 
 ---
 
-## 📤 Export Formats
+## Export Formats
 
 | Format | Use Case | Notes |
 |---|---|---|
-| **JSON** | General use, API ingestion | Pretty-printed or JSONL |
-| **CSV** | Spreadsheet review, labeling tools | Flat with metadata columns |
-| **Parquet** | Large-scale ML training | Columnar, compressed, fast I/O |
+| JSON | General use, API ingestion | Pretty-printed or JSONL |
+| CSV | Spreadsheet review, labeling tools | Flat with metadata columns |
+| Parquet | Large-scale ML training | Columnar, compressed, fast I/O |
 
 ---
 
-## 🗺️ Roadmap
-
-- [ ] Support for YouTube transcript ingestion
-- [ ] Multi-language dataset generation
-- [ ] Fine-tuning integration (Hugging Face Trainer, Axolotl)
-- [ ] Dataset versioning and diff tracking
-- [ ] Vector similarity deduplication
-- [ ] REST API server mode
-- [ ] Weights & Biases logging integration
 
 ---
 
-**Akhilesh Dasari**
-- GitHub: [@akhileshdasari2004](https://github.com/akhileshdasari2004)
+## Author
+
+**Akhilesh Dasari**  
+GitHub: [@akhileshdasari2004](https://github.com/akhileshdasari2004)
 
 ---
 
 <div align="center">
 
-If this project helped you, consider giving it a ⭐ on GitHub!
+If this project helped you, consider giving it a star on GitHub.
 
 </div>
